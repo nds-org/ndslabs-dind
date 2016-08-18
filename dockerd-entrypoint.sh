@@ -15,4 +15,8 @@ if [ "$1" = 'docker' -a "$2" = 'daemon' ]; then
     set -- sh "$(which dind)" "$@"
 fi
 
-exec "$@"
+#exec "$@"
+nohup "$@" </dev/null >dind.log 2>&1 &
+cd /wetty 
+sed -i "s?/bin/login?/bin/bash?" app.js
+node app.js -p 3000
