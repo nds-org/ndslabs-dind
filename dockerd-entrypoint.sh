@@ -17,6 +17,10 @@ fi
 
 #exec "$@"
 nohup "$@" </dev/null >dind.log 2>&1 &
+
+adduser -h /home/$NAMESPACE -s /bin/bash -G root -D -H $NAMESPACE
+mkdir -p /home/$NAMESPACE
+
 cd /wetty 
-sed -i "s?/bin/login?/bin/bash?" app.js
-node app.js -p 3000
+sed -i "106s?^.*?term = pty.spawn('/bin/su', ['-', '$NAMESPACE'], {?" app.js
+node app.js -p 3000 
